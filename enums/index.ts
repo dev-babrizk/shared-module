@@ -103,6 +103,7 @@ export enum OrderStatus {
   ShipmentInProgress = 40, // Shipment in progress
   Delivered = 50, // Delivered
   OrderSuspended = 60, // Order suspended
+  OrderOutOfStock = 65, // Order out of stock
   OrderCancelledByAdmin = 70, // Order cancelled by the admin
   OrderCancelledByMarketer = 80, // Order cancelled by the marketer
   DeliverySuspended = 90, // Delivery suspended
@@ -207,7 +208,14 @@ export const orderStatusTypes = {
   paidedStatuses: [OrderStatus.Delivered, OrderStatus.Replaced],
   refundStatuses: [OrderStatus.Returned],
   positveStatus: [OrderStatus.OrderReceived, OrderStatus.OrderConfirmed, OrderStatus.AwaitingShipment, OrderStatus.ShipmentInProgress, OrderStatus.Delivered],
-  negativeStatus: [OrderStatus.OrderSuspended, OrderStatus.OrderCancelledByAdmin, OrderStatus.OrderCancelledByMarketer, OrderStatus.DeliverySuspended, OrderStatus.DeliveryFailedReturnInProgress],
+  negativeStatus: [
+    OrderStatus.OrderSuspended,
+    OrderStatus.OrderOutOfStock,
+    OrderStatus.OrderCancelledByAdmin,
+    OrderStatus.OrderCancelledByMarketer,
+    OrderStatus.DeliverySuspended,
+    OrderStatus.DeliveryFailedReturnInProgress,
+  ],
 };
 
 export const enum DescriptionType {
@@ -321,6 +329,7 @@ export const isOrderChangeAllowed = (status: number) => {
     case OrderStatus.OrderReceived:
     case OrderStatus.OrderConfirmed:
     case OrderStatus.OrderSuspended:
+    case OrderStatus.OrderOutOfStock:
       return true;
     default:
       return false;
@@ -348,6 +357,7 @@ const notifiableStatuses = [
   // Statuses that the user should be notified about to take an action
   OrderStatus.DeliverySuspended,
   OrderStatus.OrderSuspended,
+  OrderStatus.OrderOutOfStock,
   OrderStatus.OrderCancelledByAdmin,
   OrderStatus.OrderCancelledByMarketer,
   OrderStatus.Delivered,
@@ -362,6 +372,7 @@ export const getNextStatusOptions = (status: number) => {
       return [
         OrderStatus.OrderConfirmed, // Order confirmed
         OrderStatus.OrderSuspended, // Order suspended
+        OrderStatus.OrderOutOfStock, // Order suspended
         OrderStatus.OrderCancelledByAdmin, // Order cancelled by admin
         OrderStatus.OrderCancelledByMarketer, // Order cancelled by marketer
       ];
@@ -394,11 +405,18 @@ export const getNextStatusOptions = (status: number) => {
         OrderStatus.OrderCancelledByMarketer, // Order cancelled by marketer
         OrderStatus.OrderCancelledByAdmin, // Order cancelled by admin
       ];
+    case OrderStatus.OrderOutOfStock: // Order suspended
+      return [
+        OrderStatus.OrderConfirmed, // Order confirmed
+        OrderStatus.OrderCancelledByMarketer, // Order cancelled by marketer
+        OrderStatus.OrderCancelledByAdmin, // Order cancelled by admin
+      ];
     case OrderStatus.OrderCancelledByAdmin: // Order cancelled by admin
     case OrderStatus.OrderCancelledByMarketer: // Order cancelled by marketer
       return [
         OrderStatus.OrderConfirmed, // Order confirmed
         OrderStatus.OrderSuspended, // Order suspended
+        OrderStatus.OrderOutOfStock, // Order suspended
       ];
     case OrderStatus.DeliverySuspended: // Delivery suspended
       return [
