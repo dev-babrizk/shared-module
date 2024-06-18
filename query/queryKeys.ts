@@ -34,6 +34,7 @@ export const queryKeys = {
       orderItem: 'AUTH_ORDERS_ORDERITEM',
       orderItemStatus: 'AUTH_ORDERS_ORDERITEMSTATUS',
       orderExcel: 'AUTH_ORDERS_ORDEREXCEL',
+      trackingExcel: 'AUTH_ORDERS_TRACKINGEXCEL',
     },
     sourcing: {
       getAllSourcing: 'AUTH_SOURCING_GETALLSOURCING',
