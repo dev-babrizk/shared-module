@@ -115,6 +115,7 @@ export const queryKeys = {
       offers: 'ADMIN_DROPDOWN_OFFERS',
       usersLabels: 'ADMIN_DROPDOWN_USERSLABELS',
       users: 'ADMIN_DROPDOWN_USERS',
+      shipping: 'ADMIN_DROPDOWN_SHIPPING',
     },
   },
 };

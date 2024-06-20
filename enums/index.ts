@@ -336,6 +336,21 @@ export const isOrderChangeAllowed = (status: number) => {
   }
 };
 
+export const isOrderShippingChangeAllowed = (status: number) => {
+  switch (status) {
+    case OrderStatus.OnCart:
+    case OrderStatus.OnExcelsheet:
+    case OrderStatus.OrderReceived:
+    case OrderStatus.OrderConfirmed:
+    case OrderStatus.AwaitingShipment:
+    case OrderStatus.OrderSuspended:
+    case OrderStatus.OrderOutOfStock:
+      return true;
+    default:
+      return false;
+  }
+};
+
 // Paided statuses are the statuses that the order is considered as success
 export const isStatusToSuccess = (oldStatus: number, status: number) => {
   return !orderStatusTypes.paidedStatuses.includes(oldStatus) && orderStatusTypes.paidedStatuses.includes(status);
