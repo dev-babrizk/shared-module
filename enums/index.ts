@@ -449,3 +449,11 @@ export const getNextStatusOptions = (status: number) => {
       return [];
   }
 };
+export enum AttributesTypes {
+  Weight = 1,
+  Color,
+  Size,
+  Material,
+  Brand,
+  Model,
+}
