@@ -261,6 +261,13 @@ export enum CategoryType {
   Main = 'main',
 }
 
+export enum DynamicLinkYourStoreModalEnum {
+  linkStore = 1,
+  active = 2,
+  pause = 3,
+  delete = 4,
+}
+
 export const PermissionType: any = {
   [PermissionTypeEnum.Manage]: 'Manage',
   [PermissionTypeEnum.Create]: 'Create',

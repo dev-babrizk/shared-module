@@ -88,6 +88,7 @@ export const queryKeys = {
     system: {
       current: 'AUTH_SYSTEM_CURRENT',
     },
+    integration: 'AUTH_INTEGRATION',
   },
   admin: {
     surveys: 'ADMIN_SURVEYS',
