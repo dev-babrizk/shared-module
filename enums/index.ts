@@ -97,21 +97,63 @@ export enum UserRole {
 export enum OrderStatus {
   OnCart = 1, // Order is on the cart
   OnExcelsheet = 2, // Order is on the excels
+
+  // Confirmation Steps
   OrderReceived = 10, // Order received
   OrderConfirmed = 20, // Order confirmed by the admin
+
+  // Fulfillment Steps
   AwaitingShipment = 30, // Waiting for the shipping company
   ShipmentInProgress = 40, // Shipment in progress
+
+  // Delivery Steps
   Delivered = 50, // Delivered
   OrderSuspended = 60, // Order suspended
   OrderOutOfStock = 65, // Order out of stock
   OrderCancelledByAdmin = 70, // Order cancelled by the admin
   OrderCancelledByMarketer = 80, // Order cancelled by the marketer
   DeliverySuspended = 90, // Delivery suspended
+
+  // Customer Service Steps
   DeliveryFailedReturnInProgress = 100, // Delivery failed and return in progress
   ReturnInProgress = 110, // Return in progress
   Returned = 120, // Returned
   ReplacementInProgress = 130, // Replacement in progress
   Replaced = 140, // Replaced
+}
+
+// New Order Status Structure
+export enum NewOrderStatus {
+  OnCart = 1, // Order is on the cart
+  OnExcelsheet = 2, // Order is on the excels
+
+  // Confirmation Steps
+  NewOrderRequest = 10,
+  HoldConfirmationOrder = 11,
+  ConfirmedOrder = 12,
+  FailedConfirmation = 13,
+
+  // Fulfillment Steps
+  OrderPreparing = 20,
+  ShippedOrder = 21,
+  FailedFulfillment = 22,
+
+  // Delivery Steps
+  PendingOrder = 30,
+  DeliveredOrder = 31,
+  FailedDelivery = 32,
+
+  // Customer Service Steps
+  ExchangeOrderInProgress = 40,
+  ExchangedOrder = 41,
+  FailedExchangeRequest = 42,
+  ReturnOrderInProgress = 43,
+  ReturnedOrder = 44,
+  FailedReturnRequest = 45,
+
+  // Other Steps
+  OutOfStockProduct = 50,
+  CancelledOrderByMerchant = 51,
 }
 
 // Payment status
