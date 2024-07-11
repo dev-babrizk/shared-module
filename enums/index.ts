@@ -23,10 +23,13 @@ export enum TransactionType {
   Refunded,
 }
 export enum Platforms {
+  TikTok = 'tt',
+  Snapchat = 'sc',
+  Google = 'gg',
+  Instagram = 'ig',
   Facebook = 'fb',
   WhatsApp = 'wa',
   Groups = 'fbg',
-  TikTok = 'tt',
   Twitter = 'tw',
   Other = 'ot',
 }
