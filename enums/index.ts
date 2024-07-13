@@ -104,9 +104,6 @@ export enum UserRole {
 
 // Order status
 export enum OrderStatus {
-  OnCart = 1, // Order is on the cart
-  OnExcelsheet = 2, // Order is on the excels
-
   // Confirmation Steps
   OrderReceived = 10, // Order received
   OrderConfirmed = 20, // Order confirmed by the admin
@@ -133,9 +130,6 @@ export enum OrderStatus {
 
 // New Order Status Structure
 export enum NewOrderStatus {
-  OnCart = 1, // Order is on the cart
-  OnExcelsheet = 2, // Order is on the excels
-
   // Confirmation Steps
   NewOrderRequest = 10,
   HoldConfirmationOrder = 11,
@@ -382,8 +376,6 @@ export const PermissionByRole: any = {
 // };
 export const isOrderChangeAllowed = (status: number) => {
   switch (status) {
-    case OrderStatus.OnCart:
-    case OrderStatus.OnExcelsheet:
     case OrderStatus.OrderReceived:
     case OrderStatus.OrderConfirmed:
     case OrderStatus.OrderSuspended:
