@@ -50,6 +50,12 @@ export enum FileOrdersType {
   Pending = 1,
   Success,
   Rejected,
+  Expired,
+}
+
+export enum FileTypes {
+  OnCart = 1,
+  OnExcelsheet,
 }
 
 export enum InvalidRowType {
