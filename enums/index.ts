@@ -105,32 +105,6 @@ export enum UserRole {
 // Order status
 export enum OrderStatus {
   // Confirmation Steps
-  OrderReceived = 10, // Order received
-  OrderConfirmed = 20, // Order confirmed by the admin
-
-  // Fulfillment Steps
-  AwaitingShipment = 30, // Waiting for the shipping company
-  ShipmentInProgress = 40, // Shipment in progress
-
-  // Delivery Steps
-  Delivered = 50, // Delivered
-  OrderSuspended = 60, // Order suspended
-  OrderOutOfStock = 65, // Order out of stock
-  OrderCancelledByAdmin = 70, // Order cancelled by the admin
-  OrderCancelledByMarketer = 80, // Order cancelled by the marketer
-  DeliverySuspended = 90, // Delivery suspended
-
-  // Customer Service Steps
-  DeliveryFailedReturnInProgress = 100, // Delivery failed and return in progress
-  ReturnInProgress = 110, // Return in progress
-  Returned = 120, // Returned
-  ReplacementInProgress = 130, // Replacement in progress
-  Replaced = 140, // Replaced
-}
-
-// New Order Status Structure
-export enum NewOrderStatus {
-  // Confirmation Steps
   NewOrderRequest = 10,
   HoldConfirmationOrder = 11,
   ConfirmedOrder = 12,
@@ -150,13 +124,14 @@ export enum NewOrderStatus {
   ExchangeOrderInProgress = 40,
   ExchangedOrder = 41,
   FailedExchangeRequest = 42,
+
   ReturnOrderInProgress = 43,
   ReturnedOrder = 44,
   FailedReturnRequest = 45,
 
   // Other Steps
   OutOfStockProduct = 50,
-  CancelledOrderByMerchant = 51,
+  CancelledOrderByMarketer = 51,
 }
 
 // Payment status
@@ -173,10 +148,10 @@ export const enum SourcingStatus {
   Confirmed = 10, // Order confirmed by the client
   Accepted = 20, // Order accepted by the admin
   OnTheWayToDelivery = 30, // Order is on the way to delivery
-  Delivered = 40, // Order delivered to the client
+  DeliveredOrder = 40, // Order DeliveredOrder to the client
   Canceled = 50, // Order canceled by the client
   OnTheWayToReturn = 60, // Order is on the way to return
-  Returned = 70, // Order returned to the store
+  ReturnedOrder = 70, // Order returned to the store
   Refunded = 80, // Order refunded to the client
   Rejected = 90, // Order rejected by the admin
   Replacing = 100, // Order is replacing
@@ -250,16 +225,18 @@ export enum WidthFilter {
 
 // Order status
 export const orderStatusTypes = {
-  paidedStatuses: [OrderStatus.Delivered, OrderStatus.Replaced],
-  refundStatuses: [OrderStatus.Returned],
-  positveStatus: [OrderStatus.OrderReceived, OrderStatus.OrderConfirmed, OrderStatus.AwaitingShipment, OrderStatus.ShipmentInProgress, OrderStatus.Delivered],
+  paidedStatuses: [OrderStatus.DeliveredOrder, OrderStatus.ExchangedOrder],
+  refundStatuses: [OrderStatus.ReturnedOrder],
+  positveStatus: [OrderStatus.NewOrderRequest, OrderStatus.ConfirmedOrder, OrderStatus.ShippedOrder, OrderStatus.OrderPreparing, OrderStatus.PendingOrder, OrderStatus.DeliveredOrder],
   negativeStatus: [
-    OrderStatus.OrderSuspended,
-    OrderStatus.OrderOutOfStock,
-    OrderStatus.OrderCancelledByAdmin,
-    OrderStatus.OrderCancelledByMarketer,
-    OrderStatus.DeliverySuspended,
-    OrderStatus.DeliveryFailedReturnInProgress,
+    OrderStatus.HoldConfirmationOrder,
+    OrderStatus.OutOfStockProduct,
+    OrderStatus.FailedConfirmation,
+    OrderStatus.FailedFulfillment,
+    OrderStatus.CancelledOrderByMarketer,
+    OrderStatus.FailedDelivery,
+    OrderStatus.FailedReturnRequest,
+    OrderStatus.FailedExchangeRequest,
   ],
 };
 
@@ -376,10 +353,10 @@ export const PermissionByRole: any = {
 // };
 export const isOrderChangeAllowed = (status: number) => {
   switch (status) {
-    case OrderStatus.OrderReceived:
-    case OrderStatus.OrderConfirmed:
-    case OrderStatus.OrderSuspended:
-    case OrderStatus.OrderOutOfStock:
+    case OrderStatus.NewOrderRequest:
+    case OrderStatus.ConfirmedOrder:
+    case OrderStatus.HoldConfirmationOrder:
+    case OrderStatus.OutOfStockProduct:
       return true;
     default:
       return false;
@@ -388,7 +365,7 @@ export const isOrderChangeAllowed = (status: number) => {
 
 export const isOrderShippingChangeAllowed = (status: number) => {
   switch (status) {
-    case OrderStatus.AwaitingShipment:
+    case OrderStatus.OrderPreparing:
       return true;
     default:
       return false;
@@ -414,12 +391,13 @@ export const isStatusToFailed = (oldStatus: number, status: number) => {
 
 const notifiableStatuses = [
   // Statuses that the user should be notified about to take an action
-  OrderStatus.DeliverySuspended,
-  OrderStatus.OrderSuspended,
-  OrderStatus.OrderOutOfStock,
-  OrderStatus.OrderCancelledByAdmin,
-  OrderStatus.OrderCancelledByMarketer,
-  OrderStatus.Delivered,
+  OrderStatus.FailedDelivery,
+  OrderStatus.HoldConfirmationOrder,
+  OrderStatus.OutOfStockProduct,
+  OrderStatus.FailedConfirmation,
+  OrderStatus.FailedFulfillment,
+  OrderStatus.CancelledOrderByMarketer,
+  OrderStatus.DeliveredOrder,
 ];
 
 export const isStatusNotifiable = (status: number) => {
@@ -427,74 +405,30 @@ export const isStatusNotifiable = (status: number) => {
 };
 export const getNextStatusOptions = (status: number) => {
   switch (status) {
-    case OrderStatus.OrderReceived: // Order received
-      return [
-        OrderStatus.OrderConfirmed, // Order confirmed
-        OrderStatus.OrderSuspended, // Order suspended
-        OrderStatus.OrderOutOfStock, // Order suspended
-        OrderStatus.OrderCancelledByAdmin, // Order cancelled by admin
-        OrderStatus.OrderCancelledByMarketer, // Order cancelled by marketer
-      ];
-    case OrderStatus.OrderConfirmed: // Order confirmed
-      return [
-        OrderStatus.AwaitingShipment, // Awaiting shipment
-        OrderStatus.ShipmentInProgress, // Shipment in progress
-        OrderStatus.OrderCancelledByAdmin, // Order cancelled by admin
-        OrderStatus.OrderCancelledByMarketer, // Order cancelled by marketer
-      ];
-    case OrderStatus.AwaitingShipment: // Awaiting shipment
-      return [
-        OrderStatus.ShipmentInProgress, // Shipment in progress
-        OrderStatus.OrderCancelledByAdmin, // Order cancelled by admin
-      ];
-    case OrderStatus.ShipmentInProgress: // Shipment in progress
-      return [
-        OrderStatus.Delivered, // Delivered
-        OrderStatus.OrderCancelledByAdmin, // Order cancelled by admin
-        OrderStatus.DeliverySuspended, // Delivery suspended
-      ];
-    case OrderStatus.Delivered: // Delivered
-      return [
-        OrderStatus.ReturnInProgress, // Return in progress
-        OrderStatus.ReplacementInProgress, // Replacement in progress
-      ];
-    case OrderStatus.OrderSuspended: // Order suspended
-      return [
-        OrderStatus.OrderConfirmed, // Order confirmed
-        OrderStatus.OrderCancelledByMarketer, // Order cancelled by marketer
-        OrderStatus.OrderCancelledByAdmin, // Order cancelled by admin
-      ];
-    case OrderStatus.OrderOutOfStock: // Order suspended
-      return [
-        OrderStatus.OrderConfirmed, // Order confirmed
-        OrderStatus.OrderCancelledByMarketer, // Order cancelled by marketer
-        OrderStatus.OrderCancelledByAdmin, // Order cancelled by admin
-      ];
-    case OrderStatus.OrderCancelledByAdmin: // Order cancelled by admin
-    case OrderStatus.OrderCancelledByMarketer: // Order cancelled by marketer
-      return [
-        OrderStatus.OrderConfirmed, // Order confirmed
-        OrderStatus.OrderSuspended, // Order suspended
-        OrderStatus.OrderOutOfStock, // Order suspended
-      ];
-    case OrderStatus.DeliverySuspended: // Delivery suspended
-      return [
-        OrderStatus.DeliveryFailedReturnInProgress, // Delivery failed, return in progress
-        OrderStatus.Delivered, // Delivered
-      ];
-    case OrderStatus.DeliveryFailedReturnInProgress: // Delivery failed, return in progress
-      return [
-        OrderStatus.Delivered, // Delivered
-        OrderStatus.DeliverySuspended, // Delivery suspended
-      ];
-    case OrderStatus.ReturnInProgress: // Return in progress
-      return [
-        OrderStatus.Returned, // Returned
-      ];
-    case OrderStatus.ReplacementInProgress: // Replacement in progress
-      return [
-        OrderStatus.Replaced, // Replaced
-      ];
+    case OrderStatus.NewOrderRequest:
+      return [OrderStatus.ConfirmedOrder, OrderStatus.HoldConfirmationOrder, OrderStatus.FailedConfirmation, OrderStatus.CancelledOrderByMarketer];
+    case OrderStatus.ConfirmedOrder:
+      return [OrderStatus.OrderPreparing, OrderStatus.FailedConfirmation, OrderStatus.OutOfStockProduct];
+    case OrderStatus.ShippedOrder:
+      return [OrderStatus.PendingOrder, OrderStatus.DeliveredOrder, OrderStatus.FailedDelivery];
+    case OrderStatus.OrderPreparing:
+      return [OrderStatus.ShippedOrder, OrderStatus.FailedFulfillment, OrderStatus.OutOfStockProduct];
+    case OrderStatus.PendingOrder:
+      return [OrderStatus.DeliveredOrder, OrderStatus.FailedDelivery];
+    case OrderStatus.DeliveredOrder:
+      return [OrderStatus.PendingOrder, OrderStatus.FailedDelivery, OrderStatus.ExchangeOrderInProgress, OrderStatus.ReturnOrderInProgress];
+    case OrderStatus.HoldConfirmationOrder:
+      return [OrderStatus.ConfirmedOrder, OrderStatus.CancelledOrderByMarketer, OrderStatus.FailedConfirmation];
+    case OrderStatus.FailedConfirmation:
+      return [OrderStatus.ConfirmedOrder, OrderStatus.HoldConfirmationOrder];
+    case OrderStatus.FailedFulfillment:
+      return [OrderStatus.OrderPreparing, OrderStatus.ShippedOrder];
+    case OrderStatus.FailedDelivery:
+      return [OrderStatus.PendingOrder, OrderStatus.DeliveredOrder];
+    case OrderStatus.ReturnOrderInProgress:
+      return [OrderStatus.ReturnedOrder];
+    case OrderStatus.ExchangeOrderInProgress:
+      return [OrderStatus.ExchangedOrder];
     default:
       return [];
   }
