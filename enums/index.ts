@@ -444,9 +444,10 @@ export enum AttributesTypes {
 
 export enum StockStatus {
   ForTestings = 'A',
-  MoreThan50 = 'B',
-  MoreThan150 = 'C',
-  MoreThan300 = 'D',
-  MoreThan500 = 'E',
-  MoreThan1000 = 'F',
+  From100To200 = 'B',
+  From200To400 = 'C',
+  From400To600 = 'D',
+  From600To800 = 'E',
+  From800To1000 = 'F',
+  MoreThan1000 = 'G',
 }
