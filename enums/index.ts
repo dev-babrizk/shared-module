@@ -441,3 +441,12 @@ export enum AttributesTypes {
   Brand,
   Model,
 }
+
+export enum StockStatus {
+  ForTestings = 'A',
+  MoreThan50 = 'B',
+  MoreThan150 = 'C',
+  MoreThan300 = 'D',
+  MoreThan500 = 'E',
+  MoreThan1000 = 'F',
+}
