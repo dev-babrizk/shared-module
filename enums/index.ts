@@ -269,6 +269,7 @@ export const enum CategoryTypeEnum {
   Tickets = 14,
   Settings = 15,
   Permissions = 17,
+  Pricing = 18,
 }
 export const enum PermissionTypeEnum {
   Manage = 'M',
@@ -301,6 +302,7 @@ export const PermissionByRole: any = {
   [UserRole.SAdmin]: {
     [CategoryTypeEnum.Dashboard]: [PermissionTypeEnum.Manage],
     [CategoryTypeEnum.Stocks]: [PermissionTypeEnum.Manage, PermissionTypeEnum.Create, PermissionTypeEnum.Update, PermissionTypeEnum.Delete],
+    [CategoryTypeEnum.Pricing]: [PermissionTypeEnum.Manage, PermissionTypeEnum.Create, PermissionTypeEnum.Update, PermissionTypeEnum.Delete],
     [CategoryTypeEnum.Services]: [PermissionTypeEnum.Manage, PermissionTypeEnum.Create, PermissionTypeEnum.Update, PermissionTypeEnum.Delete],
     [CategoryTypeEnum.Affiliators]: [PermissionTypeEnum.Manage, PermissionTypeEnum.Create, PermissionTypeEnum.Update, PermissionTypeEnum.Delete],
     [CategoryTypeEnum.Orders]: [PermissionTypeEnum.Manage, PermissionTypeEnum.Create, PermissionTypeEnum.Update, PermissionTypeEnum.Delete],
@@ -317,6 +319,7 @@ export const PermissionByRole: any = {
   },
   [UserRole.Admin]: {
     [CategoryTypeEnum.Stocks]: [PermissionTypeEnum.Manage, PermissionTypeEnum.Create, PermissionTypeEnum.Update, PermissionTypeEnum.Delete],
+    [CategoryTypeEnum.Pricing]: [PermissionTypeEnum.Manage, PermissionTypeEnum.Create, PermissionTypeEnum.Update, PermissionTypeEnum.Delete],
     [CategoryTypeEnum.Affiliators]: [PermissionTypeEnum.Manage, PermissionTypeEnum.Create, PermissionTypeEnum.Update, PermissionTypeEnum.Delete],
     [CategoryTypeEnum.Orders]: [PermissionTypeEnum.Manage, PermissionTypeEnum.Create, PermissionTypeEnum.Update, PermissionTypeEnum.Delete],
     [CategoryTypeEnum.Wallet]: [PermissionTypeEnum.Manage, PermissionTypeEnum.Create, PermissionTypeEnum.Update, PermissionTypeEnum.Delete],
