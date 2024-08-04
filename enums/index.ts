@@ -142,6 +142,12 @@ export const enum PaymentStatus {
   Canceled,
 }
 
+// Integration type
+export const enum IntegrationType {
+  EO = 1,
+  WP,
+}
+
 // Sourcing status
 export const enum SourcingStatus {
   OnCart = 0, // Order is on the cart
