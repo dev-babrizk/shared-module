@@ -146,6 +146,7 @@ export const enum PaymentStatus {
 export const enum IntegrationType {
   EO = 1,
   WP,
+  //
 }
 
 // Sourcing status
