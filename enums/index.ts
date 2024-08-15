@@ -82,6 +82,23 @@ export enum PaymentMethodsTypes {
   InstaPay,
 }
 
+export enum OrderPaymentMethodsTypes {
+  COD = 'cod',
+  Prepaid = 'prepaid',
+  CreditCard = 'credit_card',
+  Paypal = 'paypal',
+  Mada = 'mada',
+  Free = 'free',
+  BankTransfer = 'bank',
+  ApplePay = 'apple_pay',
+  StcPay = 'stc_pay',
+  TamaraInstallment = 'tamara_installment',
+  SpotiiPay = 'spotii_pay',
+  TabbyInstallment = 'tabby_installment',
+  Knet = 'knet',
+  Waiting = 'waiting',
+}
+
 export enum CompanyOrIndividual {
   Individual = 0,
   Company,
