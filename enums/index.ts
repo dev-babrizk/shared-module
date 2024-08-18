@@ -164,6 +164,7 @@ export const enum IntegrationType {
   EO = 1,
   WP,
   BO,
+  ODOO,
 }
 
 // Sourcing status
@@ -477,4 +478,11 @@ export enum StockStatus {
   From600To800 = 'E',
   From800To1000 = 'F',
   MoreThan1000 = 'G',
+}
+
+export enum OrderSource {
+  BabRizkOrders = 'BabRizkOrders',
+  Odoo = 'Odoo',
+  WordPress = 'WordPress',
+  EasyOrders = 'EasyOrders',
 }
