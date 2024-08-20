@@ -486,3 +486,53 @@ export enum OrderSource {
   WordPress = 'WordPress',
   EasyOrders = 'EasyOrders',
 }
+
+export enum ODOO_WarehouseState {
+  PENDING = 'draft',
+  WAITING_STOCK = 'waiting',
+  READY_TO_ASSIGN = 'ready_to_assign',
+  ASSIGNED_TO_SHIPPING = 'assign',
+  PICKING = 'picking',
+  FULFILLMENT = 'fulfillment',
+  DISPATCHED = 'dispatched',
+  SHIPPED = 'shipped',
+  TO_RETURN = 'to_return',
+  RETURNED_TO_WAREHOUSE = 'returned',
+  CANCELLED = 'cancel',
+}
+
+export enum ODOO_DeliveryState {
+  PENDING = 'draft',
+  IN_TRANSIT = 'transit',
+  OUT_FOR_DELIVERY = 'out',
+  COURIER_DELIVERED = 'courier_delivered',
+  DELIVERED = 'delivered',
+  RETURNED = 'return',
+  DAMAGED = 'damage',
+  LOST = 'lost',
+  RETURNED_TO_WAREHOUSE = 'returned',
+  RETURN_REFUND = 'return_refund',
+  COMPLETED = 'completed',
+  READY_FOR_RETURN = 'ready_for_return',
+  EXCHANGE_REQUEST = 'exchange_request',
+  EXCHANGE_IN_PROGRESS = 'exchange_in_progress',
+  EXCHANGE_UNSUCCESSFUL = 'exchange_unsuccessful',
+  EXCHANGE_COMPLETED = 'exchange_completed',
+  REFUND_REQUEST = 'refund_request',
+  REFUND_IN_PROGRESS = 'refund_in_progress',
+  REFUND_UNSUCCESSFUL = 'refund_unsuccessful',
+  REFUND_COMPLETED = 'refund_completed',
+}
+
+export enum ODOO_SaleOrderState {
+  PROCESS = 'draft',
+  SALES_CONFIRMED = 'confirm',
+  CONFIRMED = 'sale',
+  CANCEL_REQUEST = 'cancel_request',
+  ON_HOLD = 'waiting',
+  CALL_BACK = 'call_back',
+  WAITING_PAYMENT = 'waiting_payment',
+  WAITING_PAYMENT_APPROVAL = 'waiting_payment_approval',
+  FAILED_PAYMENT = 'failed_payment',
+  NO_ANSWER = 'no_answer',
+}
