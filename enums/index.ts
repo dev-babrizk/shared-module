@@ -236,7 +236,6 @@ export const orderStatusTypes = {
   refundStatuses: [OrderStatus.ReturnedOrder],
   positveStatus: [OrderStatus.NewOrderRequest, OrderStatus.ConfirmedOrder, OrderStatus.ShippedOrder, OrderStatus.OrderPreparing, OrderStatus.PendingOrder, OrderStatus.DeliveredOrder],
   negativeStatus: [
-    OrderStatus.HoldConfirmationOrder,
     OrderStatus.OutOfStockProduct,
     OrderStatus.FailedConfirmation,
     OrderStatus.FailedFulfillment,
@@ -245,6 +244,7 @@ export const orderStatusTypes = {
     OrderStatus.FailedReturnRequest,
     OrderStatus.FailedExchangeRequest,
   ],
+  pendingStatus: [OrderStatus.HoldConfirmationOrder],
 };
 
 export const enum DescriptionType {
@@ -397,6 +397,10 @@ export const isStatusToRefund = (oldStatus: number, status: number) => {
 
 export const isStatusToFailed = (oldStatus: number, status: number) => {
   return !orderStatusTypes.negativeStatus.includes(oldStatus) && orderStatusTypes.negativeStatus.includes(status);
+};
+
+export const isStatusToPending = (oldStatus: number, status: number) => {
+  return !orderStatusTypes.pendingStatus.includes(oldStatus) && orderStatusTypes.pendingStatus.includes(status);
 };
 
 const notifiableStatuses = [
