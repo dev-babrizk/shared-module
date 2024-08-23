@@ -234,9 +234,17 @@ export enum WidthFilter {
 export const orderStatusTypes = {
   paidedStatuses: [OrderStatus.DeliveredOrder, OrderStatus.ExchangedOrder],
   refundStatuses: [OrderStatus.ReturnedOrder],
-  positveStatus: [OrderStatus.NewOrderRequest, OrderStatus.ConfirmedOrder, OrderStatus.ShippedOrder, OrderStatus.OrderPreparing, OrderStatus.PendingOrder, OrderStatus.DeliveredOrder],
-  negativeStatus: [
+  positveStatus: [
+    OrderStatus.NewOrderRequest,
+    OrderStatus.HoldConfirmationOrder,
+    OrderStatus.ConfirmedOrder,
+    OrderStatus.ShippedOrder,
+    OrderStatus.OrderPreparing,
+    OrderStatus.PendingOrder,
+    OrderStatus.DeliveredOrder,
     OrderStatus.OutOfStockProduct,
+  ],
+  negativeStatus: [
     OrderStatus.FailedConfirmation,
     OrderStatus.FailedFulfillment,
     OrderStatus.CancelledOrderByMarketer,
@@ -244,7 +252,7 @@ export const orderStatusTypes = {
     OrderStatus.FailedReturnRequest,
     OrderStatus.FailedExchangeRequest,
   ],
-  pendingStatus: [OrderStatus.HoldConfirmationOrder],
+  // pendingStatus: [OrderStatus.HoldConfirmationOrder],
 };
 
 export const enum DescriptionType {
@@ -399,9 +407,9 @@ export const isStatusToFailed = (oldStatus: number, status: number) => {
   return !orderStatusTypes.negativeStatus.includes(oldStatus) && orderStatusTypes.negativeStatus.includes(status);
 };
 
-export const isStatusToPending = (oldStatus: number, status: number) => {
-  return !orderStatusTypes.pendingStatus.includes(oldStatus) && orderStatusTypes.pendingStatus.includes(status);
-};
+// export const isStatusToPending = (oldStatus: number, status: number) => {
+//   return !orderStatusTypes.pendingStatus.includes(oldStatus) && orderStatusTypes.pendingStatus.includes(status);
+// };
 
 const notifiableStatuses = [
   // Statuses that the user should be notified about to take an action
