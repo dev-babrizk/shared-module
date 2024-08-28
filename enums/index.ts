@@ -82,6 +82,23 @@ export enum PaymentMethodsTypes {
   InstaPay,
 }
 
+export enum OrderPaymentMethodsTypes {
+  COD = 'cod',
+  Prepaid = 'prepaid',
+  CreditCard = 'credit_card',
+  Paypal = 'paypal',
+  Mada = 'mada',
+  Free = 'free',
+  BankTransfer = 'bank',
+  ApplePay = 'apple_pay',
+  StcPay = 'stc_pay',
+  TamaraInstallment = 'tamara_installment',
+  SpotiiPay = 'spotii_pay',
+  TabbyInstallment = 'tabby_installment',
+  Knet = 'knet',
+  Waiting = 'waiting',
+}
+
 export enum CompanyOrIndividual {
   Individual = 0,
   Company,
@@ -146,7 +163,8 @@ export const enum PaymentStatus {
 export const enum IntegrationType {
   EO = 1,
   WP,
-  //
+  BO,
+  ODOO,
 }
 
 // Sourcing status
@@ -472,4 +490,141 @@ export enum StockStatus {
   From600To800 = 'E',
   From800To1000 = 'F',
   MoreThan1000 = 'G',
+}
+
+export enum OrderSource {
+  BabRizkOrders = 'BabRizkOrders',
+  Odoo = 'Odoo',
+  WordPress = 'WordPress',
+  EasyOrders = 'EasyOrders',
+}
+
+export enum ODOO_WarehouseState {
+  PENDING = 'draft',
+  WAITING_STOCK = 'waiting',
+  READY_TO_ASSIGN = 'ready_to_assign',
+  ASSIGNED_TO_SHIPPING = 'assign',
+  PICKING = 'picking',
+  FULFILLMENT = 'fulfillment',
+  DISPATCHED = 'dispatched',
+  SHIPPED = 'shipped',
+  TO_RETURN = 'to_return',
+  RETURNED_TO_WAREHOUSE = 'returned',
+  CANCELLED = 'cancel',
+}
+
+export enum ODOO_DeliveryState {
+  PENDING = 'draft',
+  IN_TRANSIT = 'transit',
+  OUT_FOR_DELIVERY = 'out',
+  COURIER_DELIVERED = 'courier_delivered',
+  DELIVERED = 'delivered',
+  RETURNED = 'return',
+  DAMAGED = 'damage',
+  LOST = 'lost',
+  RETURNED_TO_WAREHOUSE = 'returned',
+  RETURN_REFUND = 'return_refund',
+  COMPLETED = 'completed',
+  READY_FOR_RETURN = 'ready_for_return',
+  EXCHANGE_REQUEST = 'exchange_request',
+  EXCHANGE_IN_PROGRESS = 'exchange_in_progress',
+  EXCHANGE_UNSUCCESSFUL = 'exchange_unsuccessful',
+  EXCHANGE_COMPLETED = 'exchange_completed',
+  REFUND_REQUEST = 'refund_request',
+  REFUND_IN_PROGRESS = 'refund_in_progress',
+  REFUND_UNSUCCESSFUL = 'refund_unsuccessful',
+  REFUND_COMPLETED = 'refund_completed',
+  CANCELLED = 'cancel',
+}
+
+export enum ODOO_SaleOrderState {
+  PROCESS = 'draft',
+  SALES_CONFIRMED = 'confirm',
+  CONFIRMED = 'sale',
+  CANCEL_REQUEST = 'cancel_request',
+  ON_HOLD = 'waiting',
+  CALL_BACK = 'call_back',
+  WAITING_PAYMENT = 'waiting_payment',
+  WAITING_PAYMENT_APPROVAL = 'waiting_payment_approval',
+  FAILED_PAYMENT = 'failed_payment',
+  NO_ANSWER = 'no_answer',
+}
+
+export function convertOrderState_From_ODOO(state: ODOO_SaleOrderState, wh_state: ODOO_WarehouseState, delivery_state: ODOO_DeliveryState): OrderStatus {
+  if (state === ODOO_SaleOrderState.PROCESS && wh_state === ODOO_WarehouseState.PENDING && delivery_state === ODOO_DeliveryState.PENDING) {
+    return OrderStatus.NewOrderRequest;
+  } else if (state === ODOO_SaleOrderState.PROCESS && delivery_state === ODOO_DeliveryState.PENDING) {
+    return OrderStatus.HoldConfirmationOrder;
+  } else if (state === ODOO_SaleOrderState.SALES_CONFIRMED && wh_state === ODOO_WarehouseState.READY_TO_ASSIGN) {
+    return OrderStatus.ConfirmedOrder;
+  } else if (state === ODOO_SaleOrderState.CANCEL_REQUEST && wh_state === ODOO_WarehouseState.CANCELLED && delivery_state === ODOO_DeliveryState.CANCELLED) {
+    return OrderStatus.FailedConfirmation;
+  } else if (wh_state === ODOO_WarehouseState.PICKING) {
+    return OrderStatus.OrderPreparing;
+  } else if (wh_state === ODOO_WarehouseState.FULFILLMENT) {
+    return OrderStatus.OrderPreparing;
+  } else if (wh_state === ODOO_WarehouseState.DISPATCHED || delivery_state === ODOO_DeliveryState.IN_TRANSIT) {
+    return OrderStatus.ShippedOrder;
+  } else if (delivery_state === ODOO_DeliveryState.COMPLETED || delivery_state === ODOO_DeliveryState.DELIVERED) {
+    return OrderStatus.DeliveredOrder;
+  } else if (delivery_state === ODOO_DeliveryState.RETURNED || delivery_state === ODOO_DeliveryState.DAMAGED || delivery_state === ODOO_DeliveryState.LOST) {
+    return OrderStatus.FailedDelivery;
+  } else if (delivery_state === ODOO_DeliveryState.EXCHANGE_IN_PROGRESS) {
+    return OrderStatus.ExchangeOrderInProgress;
+  } else if (delivery_state === ODOO_DeliveryState.EXCHANGE_COMPLETED) {
+    return OrderStatus.ExchangedOrder;
+  } else if (delivery_state === ODOO_DeliveryState.EXCHANGE_UNSUCCESSFUL) {
+    return OrderStatus.FailedExchangeRequest;
+  } else if (delivery_state === ODOO_DeliveryState.REFUND_IN_PROGRESS) {
+    return OrderStatus.ReturnOrderInProgress;
+  } else if (delivery_state === ODOO_DeliveryState.REFUND_COMPLETED) {
+    return OrderStatus.ReturnedOrder;
+  } else if (delivery_state === ODOO_DeliveryState.REFUND_UNSUCCESSFUL) {
+    return OrderStatus.FailedReturnRequest;
+  } else if (state === ODOO_SaleOrderState.CANCEL_REQUEST && wh_state === ODOO_WarehouseState.CANCELLED) {
+    return OrderStatus.CancelledOrderByMarketer;
+  } else if (wh_state === ODOO_WarehouseState.WAITING_STOCK) {
+    return OrderStatus.OutOfStockProduct;
+  }
+
+  // Fallback to NewOrderRequest if no match
+  return OrderStatus.NewOrderRequest;
+}
+export function convertOrderState_TO_ODOO(status: OrderStatus): { state: ODOO_SaleOrderState; wh_state: ODOO_WarehouseState; delivery_state: ODOO_DeliveryState } {
+  switch (status) {
+    case OrderStatus.NewOrderRequest:
+      return { state: ODOO_SaleOrderState.PROCESS, wh_state: ODOO_WarehouseState.PENDING, delivery_state: ODOO_DeliveryState.PENDING };
+    case OrderStatus.HoldConfirmationOrder:
+      return { state: ODOO_SaleOrderState.PROCESS, wh_state: ODOO_WarehouseState.PENDING, delivery_state: ODOO_DeliveryState.PENDING };
+    case OrderStatus.ConfirmedOrder:
+      return { state: ODOO_SaleOrderState.SALES_CONFIRMED, wh_state: ODOO_WarehouseState.READY_TO_ASSIGN, delivery_state: ODOO_DeliveryState.PENDING };
+    case OrderStatus.FailedConfirmation:
+      return { state: ODOO_SaleOrderState.CANCEL_REQUEST, wh_state: ODOO_WarehouseState.CANCELLED, delivery_state: ODOO_DeliveryState.CANCELLED };
+    case OrderStatus.OrderPreparing:
+      return { state: ODOO_SaleOrderState.SALES_CONFIRMED, wh_state: ODOO_WarehouseState.PICKING, delivery_state: ODOO_DeliveryState.PENDING };
+    case OrderStatus.ShippedOrder:
+      return { state: ODOO_SaleOrderState.SALES_CONFIRMED, wh_state: ODOO_WarehouseState.DISPATCHED, delivery_state: ODOO_DeliveryState.IN_TRANSIT };
+    case OrderStatus.DeliveredOrder:
+      return { state: ODOO_SaleOrderState.SALES_CONFIRMED, wh_state: ODOO_WarehouseState.SHIPPED, delivery_state: ODOO_DeliveryState.DELIVERED };
+    case OrderStatus.FailedDelivery:
+      return { state: ODOO_SaleOrderState.SALES_CONFIRMED, wh_state: ODOO_WarehouseState.SHIPPED, delivery_state: ODOO_DeliveryState.RETURNED };
+    case OrderStatus.ExchangeOrderInProgress:
+      return { state: ODOO_SaleOrderState.SALES_CONFIRMED, wh_state: ODOO_WarehouseState.SHIPPED, delivery_state: ODOO_DeliveryState.EXCHANGE_IN_PROGRESS };
+    case OrderStatus.ExchangedOrder:
+      return { state: ODOO_SaleOrderState.SALES_CONFIRMED, wh_state: ODOO_WarehouseState.SHIPPED, delivery_state: ODOO_DeliveryState.EXCHANGE_COMPLETED };
+    case OrderStatus.FailedExchangeRequest:
+      return { state: ODOO_SaleOrderState.SALES_CONFIRMED, wh_state: ODOO_WarehouseState.SHIPPED, delivery_state: ODOO_DeliveryState.EXCHANGE_UNSUCCESSFUL };
+    case OrderStatus.ReturnOrderInProgress:
+      return { state: ODOO_SaleOrderState.SALES_CONFIRMED, wh_state: ODOO_WarehouseState.SHIPPED, delivery_state: ODOO_DeliveryState.REFUND_IN_PROGRESS };
+    case OrderStatus.ReturnedOrder:
+      return { state: ODOO_SaleOrderState.SALES_CONFIRMED, wh_state: ODOO_WarehouseState.RETURNED_TO_WAREHOUSE, delivery_state: ODOO_DeliveryState.REFUND_COMPLETED };
+    case OrderStatus.FailedReturnRequest:
+      return { state: ODOO_SaleOrderState.SALES_CONFIRMED, wh_state: ODOO_WarehouseState.SHIPPED, delivery_state: ODOO_DeliveryState.REFUND_UNSUCCESSFUL };
+    case OrderStatus.CancelledOrderByMarketer:
+      return { state: ODOO_SaleOrderState.CANCEL_REQUEST, wh_state: ODOO_WarehouseState.CANCELLED, delivery_state: ODOO_DeliveryState.CANCELLED };
+    case OrderStatus.OutOfStockProduct:
+      return { state: ODOO_SaleOrderState.PROCESS, wh_state: ODOO_WarehouseState.WAITING_STOCK, delivery_state: ODOO_DeliveryState.PENDING };
+    default:
+      return { state: ODOO_SaleOrderState.PROCESS, wh_state: ODOO_WarehouseState.PENDING, delivery_state: ODOO_DeliveryState.PENDING };
+  }
 }
