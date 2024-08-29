@@ -471,6 +471,7 @@ export enum AttributesTypes {
 }
 
 export enum StockStatus {
+  OUT_OF_STOCK = '0',
   ForTestings = 'A',
   From100To200 = 'B',
   From200To400 = 'C',
