@@ -124,6 +124,7 @@ export enum OrderStatus {
   PendingOrder = 30,
   DeliveredOrder = 31,
   FailedDelivery = 32,
+  // OrderPendingDelivery = 33,
 
   // Customer Service Steps
   ExchangeOrderInProgress = 40,
@@ -539,46 +540,179 @@ export enum ODOO_SaleOrderState {
   NO_ANSWER = 'no_answer',
 }
 
+// export function convertOrderState_From_ODOO(state: ODOO_SaleOrderState, wh_state: ODOO_WarehouseState, delivery_state: ODOO_DeliveryState): OrderStatus {
+//   if (state === ODOO_SaleOrderState.PROCESS && wh_state === ODOO_WarehouseState.PENDING && delivery_state === ODOO_DeliveryState.PENDING) {
+//     return OrderStatus.NewOrderRequest;
+//   } else if (state === ODOO_SaleOrderState.NO_ANSWER && wh_state === ODOO_WarehouseState.PENDING && delivery_state === ODOO_DeliveryState.PENDING) {
+//     return OrderStatus.HoldConfirmationOrder;
+//   } else if (state === ODOO_SaleOrderState.ON_HOLD && wh_state === ODOO_WarehouseState.PENDING && delivery_state === ODOO_DeliveryState.PENDING) {
+//     return OrderStatus.HoldConfirmationOrder;
+//   } else if (state === ODOO_SaleOrderState.WAITING_PAYMENT && wh_state === ODOO_WarehouseState.PENDING && delivery_state === ODOO_DeliveryState.PENDING) {
+//     return OrderStatus.HoldConfirmationOrder;
+//     // } else if (state === ODOO_SaleOrderState.PROCESS && delivery_state === ODOO_DeliveryState.PENDING) {
+//     //   return OrderStatus.HoldConfirmationOrder;
+//   } else if (state === ODOO_SaleOrderState.CANCEL_REQUEST && wh_state === ODOO_WarehouseState.CANCELLED && delivery_state === ODOO_DeliveryState.CANCELLED) {
+//     return OrderStatus.FailedConfirmation;
+//   } else if (state === ODOO_SaleOrderState.SALES_CONFIRMED && wh_state === ODOO_WarehouseState.READY_TO_ASSIGN && delivery_state === ODOO_DeliveryState.PENDING) {
+//     return OrderStatus.ConfirmedOrder;
+//   } else if (state === ODOO_SaleOrderState.SALES_CONFIRMED && wh_state === ODOO_WarehouseState.WAITING_STOCK && delivery_state === ODOO_DeliveryState.PENDING) {
+//     return OrderStatus.ConfirmedOrder;
+//     // } else if (state === ODOO_SaleOrderState.SALES_CONFIRMED && wh_state === ODOO_WarehouseState.READY_TO_ASSIGN) {
+//     //   return OrderStatus.ConfirmedOrder;
+//   } else if (state === ODOO_SaleOrderState.SALES_CONFIRMED && wh_state === ODOO_WarehouseState.PICKING && delivery_state === ODOO_DeliveryState.PENDING) {
+//     return OrderStatus.OrderPreparing;
+//   } else if (state === ODOO_SaleOrderState.SALES_CONFIRMED && wh_state === ODOO_WarehouseState.FULFILLMENT && delivery_state === ODOO_DeliveryState.PENDING) {
+//     return OrderStatus.OrderPreparing;
+//     // } else if (wh_state === ODOO_WarehouseState.PICKING) {
+//     //   return OrderStatus.OrderPreparing;
+//     // } else if (wh_state === ODOO_WarehouseState.FULFILLMENT) {
+//     //   return OrderStatus.OrderPreparing;
+//   } else if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.IN_TRANSIT) {
+//     return OrderStatus.ShippedOrder;
+//     // } else if (wh_state === ODOO_WarehouseState.DISPATCHED || delivery_state === ODOO_DeliveryState.IN_TRANSIT) {
+//     //   return OrderStatus.ShippedOrder;
+//   } else if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.OUT_FOR_DELIVERY) {
+//     return OrderStatus.OrderPendingDelivery;
+//   } else if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.RETURNED) {
+//     return OrderStatus.PendingOrder;
+//   } else if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.READY_FOR_RETURN) {
+//     return OrderStatus.FailedDelivery;
+//   } else if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.COMPLETED) {
+//     return OrderStatus.DeliveredOrder;
+//   } else if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.DELIVERED) {
+//     return OrderStatus.DeliveredOrder;
+//     // } else if (delivery_state === ODOO_DeliveryState.COMPLETED || delivery_state === ODOO_DeliveryState.DELIVERED) {
+//     //   return OrderStatus.DeliveredOrder;
+//   } else if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.RETURNED_TO_WAREHOUSE && delivery_state === ODOO_DeliveryState.RETURNED_TO_WAREHOUSE) {
+//     return OrderStatus.FailedDelivery;
+//     // } else if (delivery_state === ODOO_DeliveryState.RETURNED || delivery_state === ODOO_DeliveryState.DAMAGED || delivery_state === ODOO_DeliveryState.LOST) {
+//     //   return OrderStatus.FailedDelivery;
+//   } else if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.EXCHANGE_IN_PROGRESS) {
+//     return OrderStatus.ExchangeOrderInProgress;
+//   } else if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.EXCHANGE_REQUEST) {
+//     return OrderStatus.ExchangeOrderInProgress;
+//     // } else if (delivery_state === ODOO_DeliveryState.EXCHANGE_IN_PROGRESS) {
+//     //   return OrderStatus.ExchangeOrderInProgress;
+//   } else if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.EXCHANGE_UNSUCCESSFUL) {
+//     return OrderStatus.FailedExchangeRequest;
+//     // } else if (delivery_state === ODOO_DeliveryState.EXCHANGE_UNSUCCESSFUL) {
+//     //   return OrderStatus.FailedExchangeRequest;
+//   } else if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.RETURNED_TO_WAREHOUSE && delivery_state === ODOO_DeliveryState.EXCHANGE_COMPLETED) {
+//     return OrderStatus.ExchangedOrder;
+//     // } else if (delivery_state === ODOO_DeliveryState.EXCHANGE_COMPLETED) {
+//     //   return OrderStatus.ExchangedOrder;
+//   } else if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.REFUND_IN_PROGRESS) {
+//     return OrderStatus.ReturnOrderInProgress;
+//   } else if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.REFUND_REQUEST) {
+//     return OrderStatus.ReturnOrderInProgress;
+//     // } else if (delivery_state === ODOO_DeliveryState.REFUND_IN_PROGRESS) {
+//     //   return OrderStatus.ReturnOrderInProgress;
+//   } else if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.REFUND_COMPLETED) {
+//     return OrderStatus.ReturnedOrder;
+//     // } else if (delivery_state === ODOO_DeliveryState.REFUND_COMPLETED) {
+//     //   return OrderStatus.ReturnedOrder;
+//   } else if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.REFUND_UNSUCCESSFUL) {
+//     return OrderStatus.FailedReturnRequest;
+//     // } else if (delivery_state === ODOO_DeliveryState.REFUND_UNSUCCESSFUL) {
+//     //   return OrderStatus.FailedReturnRequest;
+//   } else if (state === ODOO_SaleOrderState.CANCEL_REQUEST && wh_state === ODOO_WarehouseState.CANCELLED) {
+//     return OrderStatus.CancelledOrderByMarketer;
+//   } else if (wh_state === ODOO_WarehouseState.WAITING_STOCK) {
+//     return OrderStatus.OutOfStockProduct;
+//   }
+
 export function convertOrderState_From_ODOO(state: ODOO_SaleOrderState, wh_state: ODOO_WarehouseState, delivery_state: ODOO_DeliveryState): OrderStatus {
-  if (state === ODOO_SaleOrderState.PROCESS && wh_state === ODOO_WarehouseState.PENDING && delivery_state === ODOO_DeliveryState.PENDING) {
-    return OrderStatus.NewOrderRequest;
-  } else if (state === ODOO_SaleOrderState.PROCESS && delivery_state === ODOO_DeliveryState.PENDING) {
+  if (
+    (state === ODOO_SaleOrderState.PROCESS && wh_state === ODOO_WarehouseState.PENDING && delivery_state === ODOO_DeliveryState.PENDING) ||
+    (state === ODOO_SaleOrderState.NO_ANSWER && wh_state === ODOO_WarehouseState.PENDING && delivery_state === ODOO_DeliveryState.PENDING) ||
+    (state === ODOO_SaleOrderState.ON_HOLD && wh_state === ODOO_WarehouseState.PENDING && delivery_state === ODOO_DeliveryState.PENDING) ||
+    (state === ODOO_SaleOrderState.WAITING_PAYMENT && wh_state === ODOO_WarehouseState.PENDING && delivery_state === ODOO_DeliveryState.PENDING)
+  ) {
     return OrderStatus.HoldConfirmationOrder;
-  } else if (state === ODOO_SaleOrderState.SALES_CONFIRMED && wh_state === ODOO_WarehouseState.READY_TO_ASSIGN) {
-    return OrderStatus.ConfirmedOrder;
-  } else if (state === ODOO_SaleOrderState.CANCEL_REQUEST && wh_state === ODOO_WarehouseState.CANCELLED && delivery_state === ODOO_DeliveryState.CANCELLED) {
+  }
+
+  if (state === ODOO_SaleOrderState.CANCEL_REQUEST && wh_state === ODOO_WarehouseState.CANCELLED && delivery_state === ODOO_DeliveryState.CANCELLED) {
     return OrderStatus.FailedConfirmation;
-  } else if (wh_state === ODOO_WarehouseState.PICKING) {
+  }
+
+  if (
+    state === ODOO_SaleOrderState.SALES_CONFIRMED &&
+    (wh_state === ODOO_WarehouseState.READY_TO_ASSIGN || wh_state === ODOO_WarehouseState.WAITING_STOCK) &&
+    delivery_state === ODOO_DeliveryState.PENDING
+  ) {
+    return OrderStatus.ConfirmedOrder;
+  }
+
+  if (state === ODOO_SaleOrderState.SALES_CONFIRMED && (wh_state === ODOO_WarehouseState.PICKING || wh_state === ODOO_WarehouseState.FULFILLMENT) && delivery_state === ODOO_DeliveryState.PENDING) {
     return OrderStatus.OrderPreparing;
-  } else if (wh_state === ODOO_WarehouseState.FULFILLMENT) {
-    return OrderStatus.OrderPreparing;
-  } else if (wh_state === ODOO_WarehouseState.DISPATCHED || delivery_state === ODOO_DeliveryState.IN_TRANSIT) {
+  }
+
+  if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.IN_TRANSIT) {
     return OrderStatus.ShippedOrder;
-  } else if (delivery_state === ODOO_DeliveryState.COMPLETED || delivery_state === ODOO_DeliveryState.DELIVERED) {
+  }
+
+  if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.OUT_FOR_DELIVERY) {
+    //  TODO mahmound want to add new status in babrizq "OrderPendingDelivery" and do it here
+    // return OrderStatus.OrderPendingDelivery;
+    return OrderStatus.ShippedOrder;
+  }
+
+  if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.RETURNED) {
+    return OrderStatus.PendingOrder;
+  }
+
+  if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && (delivery_state === ODOO_DeliveryState.COMPLETED || delivery_state === ODOO_DeliveryState.DELIVERED)) {
     return OrderStatus.DeliveredOrder;
-  } else if (delivery_state === ODOO_DeliveryState.RETURNED || delivery_state === ODOO_DeliveryState.DAMAGED || delivery_state === ODOO_DeliveryState.LOST) {
+  }
+
+  if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.RETURNED_TO_WAREHOUSE && delivery_state === ODOO_DeliveryState.RETURNED_TO_WAREHOUSE) {
     return OrderStatus.FailedDelivery;
-  } else if (delivery_state === ODOO_DeliveryState.EXCHANGE_IN_PROGRESS) {
+  }
+
+  if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.EXCHANGE_IN_PROGRESS) {
     return OrderStatus.ExchangeOrderInProgress;
-  } else if (delivery_state === ODOO_DeliveryState.EXCHANGE_COMPLETED) {
-    return OrderStatus.ExchangedOrder;
-  } else if (delivery_state === ODOO_DeliveryState.EXCHANGE_UNSUCCESSFUL) {
+  }
+
+  if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.EXCHANGE_REQUEST) {
+    return OrderStatus.ExchangeOrderInProgress;
+  }
+
+  if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.EXCHANGE_UNSUCCESSFUL) {
     return OrderStatus.FailedExchangeRequest;
-  } else if (delivery_state === ODOO_DeliveryState.REFUND_IN_PROGRESS) {
+  }
+
+  if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.RETURNED_TO_WAREHOUSE && delivery_state === ODOO_DeliveryState.EXCHANGE_COMPLETED) {
+    return OrderStatus.ExchangedOrder;
+  }
+
+  if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.REFUND_IN_PROGRESS) {
     return OrderStatus.ReturnOrderInProgress;
-  } else if (delivery_state === ODOO_DeliveryState.REFUND_COMPLETED) {
+  }
+
+  if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.REFUND_REQUEST) {
+    return OrderStatus.ReturnOrderInProgress;
+  }
+
+  if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.REFUND_COMPLETED) {
     return OrderStatus.ReturnedOrder;
-  } else if (delivery_state === ODOO_DeliveryState.REFUND_UNSUCCESSFUL) {
+  }
+
+  if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.REFUND_UNSUCCESSFUL) {
     return OrderStatus.FailedReturnRequest;
-  } else if (state === ODOO_SaleOrderState.CANCEL_REQUEST && wh_state === ODOO_WarehouseState.CANCELLED) {
+  }
+
+  if (state === ODOO_SaleOrderState.CANCEL_REQUEST && wh_state === ODOO_WarehouseState.CANCELLED) {
     return OrderStatus.CancelledOrderByMarketer;
-  } else if (wh_state === ODOO_WarehouseState.WAITING_STOCK) {
+  }
+
+  if (wh_state === ODOO_WarehouseState.WAITING_STOCK) {
     return OrderStatus.OutOfStockProduct;
   }
 
   // Fallback to NewOrderRequest if no match
   return OrderStatus.NewOrderRequest;
 }
+
 export function convertOrderState_TO_ODOO(status: OrderStatus): { state: ODOO_SaleOrderState; wh_state: ODOO_WarehouseState; delivery_state: ODOO_DeliveryState } {
   switch (status) {
     case OrderStatus.NewOrderRequest:
