@@ -635,6 +635,10 @@ export function convertOrderState_From_ODOO(state: ODOO_SaleOrderState, wh_state
     return OrderStatus.FailedConfirmation;
   }
 
+  if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.CANCELLED && delivery_state === ODOO_DeliveryState.CANCELLED) {
+    return OrderStatus.FailedFulfillment;
+  }
+
   if (
     state === ODOO_SaleOrderState.SALES_CONFIRMED &&
     (wh_state === ODOO_WarehouseState.READY_TO_ASSIGN || wh_state === ODOO_WarehouseState.WAITING_STOCK) &&
