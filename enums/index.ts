@@ -532,6 +532,7 @@ export enum ODOO_SaleOrderState {
   SALES_CONFIRMED = 'confirm',
   CONFIRMED = 'sale',
   CANCEL_REQUEST = 'cancel_request',
+  CANCEL = 'cancel',
   ON_HOLD = 'waiting',
   CALL_BACK = 'call_back',
   WAITING_PAYMENT = 'waiting_payment',
@@ -631,8 +632,10 @@ export function convertOrderState_From_ODOO(state: ODOO_SaleOrderState, wh_state
   ) {
     return OrderStatus.HoldConfirmationOrder;
   }
-
-  if (state === ODOO_SaleOrderState.CANCEL_REQUEST && wh_state === ODOO_WarehouseState.CANCELLED && delivery_state === ODOO_DeliveryState.CANCELLED) {
+  if (
+    (state === ODOO_SaleOrderState.CANCEL_REQUEST && wh_state === ODOO_WarehouseState.CANCELLED && delivery_state === ODOO_DeliveryState.CANCELLED) ||
+    (state === ODOO_SaleOrderState.CANCEL && wh_state === ODOO_WarehouseState.CANCELLED && delivery_state === ODOO_DeliveryState.CANCELLED)
+  ) {
     return OrderStatus.FailedConfirmation;
   }
 
