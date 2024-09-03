@@ -525,6 +525,7 @@ export enum ODOO_DeliveryState {
   REFUND_UNSUCCESSFUL = 'refund_unsuccessful',
   REFUND_COMPLETED = 'refund_completed',
   CANCELLED = 'cancel',
+  RESCHEDULE = 'reschedule',
 }
 
 export enum ODOO_SaleOrderState {
@@ -651,21 +652,21 @@ export function convertOrderState_From_ODOO(state: ODOO_SaleOrderState, wh_state
     return OrderStatus.ConfirmedOrder;
   }
 
-  if (state === ODOO_SaleOrderState.SALES_CONFIRMED && (wh_state === ODOO_WarehouseState.PICKING || wh_state === ODOO_WarehouseState.FULFILLMENT) && delivery_state === ODOO_DeliveryState.PENDING) {
+  if (
+    (state === ODOO_SaleOrderState.SALES_CONFIRMED && wh_state === ODOO_WarehouseState.PICKING && delivery_state === ODOO_DeliveryState.PENDING) ||
+    (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.FULFILLMENT && delivery_state === ODOO_DeliveryState.PENDING)
+  ) {
     return OrderStatus.OrderPreparing;
   }
 
-  if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.IN_TRANSIT) {
+  if (
+    (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.IN_TRANSIT) ||
+    (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.OUT_FOR_DELIVERY)
+  ) {
     return OrderStatus.ShippedOrder;
   }
 
-  if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.OUT_FOR_DELIVERY) {
-    //  TODO mahmound want to add new status in babrizq "OrderPendingDelivery" and do it here
-    // return OrderStatus.OrderPendingDelivery;
-    return OrderStatus.ShippedOrder;
-  }
-
-  if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.RETURNED) {
+  if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.RESCHEDULE) {
     return OrderStatus.PendingOrder;
   }
 
@@ -673,7 +674,10 @@ export function convertOrderState_From_ODOO(state: ODOO_SaleOrderState, wh_state
     return OrderStatus.DeliveredOrder;
   }
 
-  if (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.RETURNED_TO_WAREHOUSE && delivery_state === ODOO_DeliveryState.RETURNED_TO_WAREHOUSE) {
+  if (
+    (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.RETURNED_TO_WAREHOUSE && delivery_state === ODOO_DeliveryState.RETURNED_TO_WAREHOUSE) ||
+    (state === ODOO_SaleOrderState.CONFIRMED && wh_state === ODOO_WarehouseState.SHIPPED && delivery_state === ODOO_DeliveryState.RETURNED)
+  ) {
     return OrderStatus.FailedDelivery;
   }
 
