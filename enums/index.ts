@@ -715,7 +715,7 @@ export function convertOrderState_From_ODOO(state: ODOO_SaleOrderState, wh_state
   }
 
   // Fallback to NewOrderRequest if no match
-  return OrderStatus.NewOrderRequest;
+  // return OrderStatus.NewOrderRequest;
 }
 
 export function convertOrderState_TO_ODOO(status: OrderStatus): { state: ODOO_SaleOrderState; wh_state: ODOO_WarehouseState; delivery_state: ODOO_DeliveryState } {
