@@ -621,7 +621,7 @@ export enum ODOO_SaleOrderState {
 //     return OrderStatus.OutOfStockProduct;
 //   }
 
-export function convertOrderState_From_ODOO(state: ODOO_SaleOrderState, wh_state: ODOO_WarehouseState, delivery_state: ODOO_DeliveryState): OrderStatus {
+export function convertOrderState_From_ODOO(state: ODOO_SaleOrderState, wh_state: ODOO_WarehouseState, delivery_state: ODOO_DeliveryState): OrderStatus | null {
   if (
     (state === ODOO_SaleOrderState.PROCESS && wh_state === ODOO_WarehouseState.PENDING && delivery_state === ODOO_DeliveryState.PENDING) ||
     (state === ODOO_SaleOrderState.NO_ANSWER && wh_state === ODOO_WarehouseState.PENDING && delivery_state === ODOO_DeliveryState.PENDING) ||
@@ -715,7 +715,7 @@ export function convertOrderState_From_ODOO(state: ODOO_SaleOrderState, wh_state
   }
 
   // Fallback to NewOrderRequest if no match
-  return OrderStatus.NewOrderRequest;
+  return null;
 }
 
 export function convertOrderState_TO_ODOO(status: OrderStatus): { state: ODOO_SaleOrderState; wh_state: ODOO_WarehouseState; delivery_state: ODOO_DeliveryState } {
