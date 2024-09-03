@@ -626,7 +626,8 @@ export function convertOrderState_From_ODOO(state: ODOO_SaleOrderState, wh_state
     (state === ODOO_SaleOrderState.PROCESS && wh_state === ODOO_WarehouseState.PENDING && delivery_state === ODOO_DeliveryState.PENDING) ||
     (state === ODOO_SaleOrderState.NO_ANSWER && wh_state === ODOO_WarehouseState.PENDING && delivery_state === ODOO_DeliveryState.PENDING) ||
     (state === ODOO_SaleOrderState.ON_HOLD && wh_state === ODOO_WarehouseState.PENDING && delivery_state === ODOO_DeliveryState.PENDING) ||
-    (state === ODOO_SaleOrderState.WAITING_PAYMENT && wh_state === ODOO_WarehouseState.PENDING && delivery_state === ODOO_DeliveryState.PENDING)
+    (state === ODOO_SaleOrderState.WAITING_PAYMENT && wh_state === ODOO_WarehouseState.PENDING && delivery_state === ODOO_DeliveryState.PENDING) ||
+    (state === ODOO_SaleOrderState.CALL_BACK && wh_state === ODOO_WarehouseState.PENDING && delivery_state === ODOO_DeliveryState.PENDING)
   ) {
     return OrderStatus.HoldConfirmationOrder;
   }
