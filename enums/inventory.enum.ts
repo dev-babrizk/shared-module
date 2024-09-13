@@ -7,7 +7,8 @@ export enum StockStatus {
 }
 
 export enum PurchaseStatus {
-  READY = 1,
+  DRAFT = 1,
+  READY,
   DONE,
   CANCELED,
 }
