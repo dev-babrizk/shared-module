@@ -1,15 +1,15 @@
 // Enums for statuses and types
-export enum InventoryStatus {
-  AVAILABLE = 'available',
-  RESERVED = 'reserved',
-  PICKED = 'picked',
-  OUT_OF_STOCK = 'out_of_stock',
+export enum StockStatus {
+  AVAILABLE = 1,
+  RESERVED,
+  PICKED,
+  OUT_OF_STOCK,
 }
 
 export enum PurchaseStatus {
-  PENDING = 'pending',
-  RECEIVED = 'received',
-  BACKORDER = 'backorder',
+  READY = 1,
+  DONE,
+  CANCELED,
 }
 
 export enum ReturnReason {
@@ -25,8 +25,8 @@ export enum PickingStatus {
 }
 
 export enum LocationType {
-  VENDOR = 'vendor',
-  WAREHOUSE = 'warehouse',
-  SHIPPING_COMPANY = 'shipping_company',
-  CLIENT = 'client',
+  WAREHOUSE = 1,
+  VENDOR,
+  SHIPPING_COMPANY,
+  CLIENT,
 }
