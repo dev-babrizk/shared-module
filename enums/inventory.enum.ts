@@ -25,6 +25,7 @@ export enum PickingStatus {
 }
 
 export enum LocationType {
+  VENDOR = 'vendor',
   WAREHOUSE = 'warehouse',
   SHIPPING_COMPANY = 'shipping_company',
   CLIENT = 'client',
