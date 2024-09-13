@@ -119,6 +119,8 @@ export const queryKeys = {
       users: 'ADMIN_DROPDOWN_USERS',
       shipping: 'ADMIN_DROPDOWN_SHIPPING',
       Attributeskeys: 'ADMIN_DROPDOWN_ATTRIBUTESKEYS',
+      vendors: 'ADMIN_DROPDOWN_VENDORS',
+      variants: 'ADMIN_DROPDOWN_VARIANTS',
     },
   },
 };
