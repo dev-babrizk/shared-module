@@ -26,8 +26,10 @@ export enum PickingStatus {
 }
 
 export enum LocationType {
-  WAREHOUSE = 1,
-  VENDOR,
+  WH_STOCK = 1,
+  WH_PACKING,
+  WH_OUTPUT,
   SHIPPING_COMPANY,
   CLIENT,
+  VENDOR,
 }
