@@ -112,6 +112,9 @@ export const queryKeys = {
     categories: 'ADMIN_CATEGORIES',
     permission: 'PERMISSION',
     accountManager: 'ACCOUNTMANAGER',
+    purchase: 'PURCHASE',
+    purchaseStock: 'PURCHASE_STOCK',
+    purchaseStockMovement: 'PURCHASE_STOCK_MOVEMENT',
     dropdown: {
       categories: 'ADMIN_DROPDOWN_CATEGORIES',
       offers: 'ADMIN_DROPDOWN_OFFERS',
