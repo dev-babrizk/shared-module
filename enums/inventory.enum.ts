@@ -1,3 +1,5 @@
+import { OrderStatus } from '.';
+
 // Enums for statuses and types
 export enum StockStatus {
   AVAILABLE = 1,
@@ -57,4 +59,45 @@ export function canUpdatePurchaseStatus(oldStatus: PurchaseStatus, newStatus: Pu
 
   // Default case: return an error if no valid transition is found
   return false;
+}
+
+export function getLocationFromStatus(status: OrderStatus): { from: LocationType; to: LocationType } | null {
+  switch (status) {
+    case OrderStatus.ConfirmedOrder:
+      return { from: LocationType.WH_STOCK, to: LocationType.WH_PACKING };
+
+    case OrderStatus.FailedConfirmation:
+      return { from: LocationType.WH_PACKING, to: LocationType.WH_STOCK };
+
+    case OrderStatus.OrderPreparing:
+      return { from: LocationType.WH_PACKING, to: LocationType.WH_OUTPUT };
+
+    case OrderStatus.FailedFulfillment:
+      return { from: LocationType.WH_OUTPUT, to: LocationType.WH_PACKING };
+
+    case OrderStatus.ShippedOrder:
+    case OrderStatus.PendingOrder:
+      return { from: LocationType.WH_OUTPUT, to: LocationType.SHIPPING_COMPANY };
+
+    case OrderStatus.FailedDelivery:
+      return { from: LocationType.SHIPPING_COMPANY, to: LocationType.WH_OUTPUT };
+
+    case OrderStatus.DeliveredOrder:
+      return { from: LocationType.SHIPPING_COMPANY, to: LocationType.CLIENT };
+
+    case OrderStatus.ExchangeOrderInProgress:
+    case OrderStatus.ReturnOrderInProgress:
+      return { from: LocationType.CLIENT, to: LocationType.SHIPPING_COMPANY };
+
+    case OrderStatus.ExchangedOrder:
+    case OrderStatus.ReturnedOrder:
+      return { from: LocationType.SHIPPING_COMPANY, to: LocationType.WH_STOCK };
+
+    case OrderStatus.FailedExchangeRequest:
+    case OrderStatus.FailedReturnRequest:
+      return { from: LocationType.SHIPPING_COMPANY, to: LocationType.CLIENT };
+
+    default:
+      return null; // Return null if no valid status is matched
+  }
 }
