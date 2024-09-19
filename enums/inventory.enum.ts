@@ -21,9 +21,10 @@ export enum ReturnReason {
 }
 
 export enum PickingStatus {
-  READY = 'ready',
-  ASSIGNED = 'assigned',
-  SHIPPED = 'shipped',
+  DRAFT = 1,
+  READY,
+  DONE,
+  CANCELED,
 }
 
 export enum LocationType {
@@ -63,14 +64,14 @@ export function canUpdatePurchaseStatus(oldStatus: PurchaseStatus, newStatus: Pu
 
 export function getLocationFromStatus(status: OrderStatus): { from: LocationType; to: LocationType } | null {
   switch (status) {
-    case OrderStatus.ConfirmedOrder:
-      return { from: LocationType.WH_STOCK, to: LocationType.WH_PACKING };
+    // case OrderStatus.ConfirmedOrder:
+    //   return { from: LocationType.WH_STOCK, to: LocationType.WH_PACKING };
 
     case OrderStatus.FailedConfirmation:
       return { from: LocationType.WH_PACKING, to: LocationType.WH_STOCK };
 
     case OrderStatus.OrderPreparing:
-      return { from: LocationType.WH_PACKING, to: LocationType.WH_OUTPUT };
+      return { from: LocationType.WH_STOCK, to: LocationType.WH_PACKING };
 
     case OrderStatus.FailedFulfillment:
       return { from: LocationType.WH_OUTPUT, to: LocationType.WH_PACKING };
