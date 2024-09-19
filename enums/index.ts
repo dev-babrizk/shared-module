@@ -1,3 +1,4 @@
+
 export const enum EnumDetailsType {
   Description = 1, // [Description, Images]
   Details, // [Description, Image]
