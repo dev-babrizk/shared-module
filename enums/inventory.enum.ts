@@ -21,10 +21,10 @@ export enum ReturnReason {
 }
 
 export enum PickingStatus {
-  DRAFT = 1,
-  READY,
-  DONE,
-  CANCELED,
+  READY = 1,
+  CONFIRMED,
+  REVERSED,
+  CANCELLED,
 }
 
 export enum LocationType {
