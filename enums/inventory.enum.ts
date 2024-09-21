@@ -28,12 +28,12 @@ export enum PickingStatus {
 }
 
 export enum LocationType {
-  WH_STOCK = 1,
-  WH_PACKING,
-  WH_OUTPUT,
-  SHIPPING_COMPANY,
-  CLIENT,
-  VENDOR,
+  WH_STOCK = 'STOCK',
+  WH_PACKING = 'PICK',
+  WH_OUTPUT = 'WH_OUTPUT',
+  SHIPPING_COMPANY = 'SHIPPING_COMPANY',
+  CLIENT = 'CLIENT',
+  VENDOR = 'VENDOR',
 }
 
 export function canUpdatePurchaseStatus(oldStatus: PurchaseStatus, newStatus: PurchaseStatus): boolean {
