@@ -1,4 +1,3 @@
-
 export const enum EnumDetailsType {
   Description = 1, // [Description, Images]
   Details, // [Description, Image]
@@ -392,6 +391,15 @@ export const isOrderChangeAllowed = (status: number) => {
 export const isOrderShippingChangeAllowed = (status: number) => {
   switch (status) {
     case OrderStatus.OrderPreparing:
+      return true;
+    default:
+      return false;
+  }
+};
+
+export const isOrderPickinglistChangeAllowed = (status: number) => {
+  switch (status) {
+    case OrderStatus.ShippedOrder:
       return true;
     default:
       return false;
