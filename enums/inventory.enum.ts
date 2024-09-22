@@ -21,8 +21,9 @@ export enum ReturnReason {
 }
 
 export enum PickingStatus {
-  READY = 1,
-  CONFIRMED,
+  DRAFT = 1,
+  IN_PROGRESS,
+  DONE,
   REVERSED,
   CANCELLED,
 }
