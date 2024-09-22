@@ -77,7 +77,9 @@ export function getLocationFromStatus(status: OrderStatus): { from: LocationType
     case OrderStatus.FailedFulfillment:
       return { from: LocationType.WH_OUTPUT, to: LocationType.WH_PACKING };
 
-    case OrderStatus.ShippedOrder:
+    case OrderStatus.ShippedOrder: // Order is shipped from the warehouse
+      return { from: LocationType.WH_PACKING, to: LocationType.WH_OUTPUT };
+
     case OrderStatus.PendingOrder:
       return { from: LocationType.WH_OUTPUT, to: LocationType.SHIPPING_COMPANY };
 
@@ -102,4 +104,24 @@ export function getLocationFromStatus(status: OrderStatus): { from: LocationType
     default:
       return null; // Return null if no valid status is matched
   }
+}
+
+export function canUpdatePickingListStatus(oldStatus: PickingStatus, newStatus: PickingStatus): boolean {
+  // If the old status is DONE, CANCELLED, or REVERSED, don't allow any changes
+  if ([PickingStatus.DONE, PickingStatus.CANCELLED, PickingStatus.REVERSED].includes(oldStatus)) {
+    return false;
+  }
+
+  // If the old status is DRAFT, it can only be changed to IN_PROGRESS or CANCELLED
+  if (oldStatus === PickingStatus.DRAFT) {
+    return [+PickingStatus.IN_PROGRESS, +PickingStatus.CANCELLED].includes(+newStatus);
+  }
+
+  // If the old status is IN_PROGRESS, it can only be changed to DONE or REVERSED
+  if (oldStatus === PickingStatus.IN_PROGRESS) {
+    return [+PickingStatus.DONE, +PickingStatus.REVERSED].includes(+newStatus);
+  }
+
+  // Default case: return false if no valid transition is found
+  return false;
 }
