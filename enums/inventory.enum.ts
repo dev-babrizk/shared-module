@@ -65,41 +65,18 @@ export function canUpdatePurchaseStatus(oldStatus: PurchaseStatus, newStatus: Pu
 
 export function getLocationFromStatus(status: OrderStatus): { from: LocationType; to: LocationType } | null {
   switch (status) {
-    // case OrderStatus.ConfirmedOrder:
-    //   return { from: LocationType.WH_STOCK, to: LocationType.WH_PACKING };
-
-    case OrderStatus.FailedConfirmation:
-      return { from: LocationType.WH_PACKING, to: LocationType.WH_STOCK };
-
-    case OrderStatus.OrderPreparing:
-      return { from: LocationType.WH_STOCK, to: LocationType.WH_PACKING };
-
-    case OrderStatus.FailedFulfillment:
-      return { from: LocationType.WH_OUTPUT, to: LocationType.WH_PACKING };
-
     case OrderStatus.ShippedOrder: // Order is shipped from the warehouse
       return { from: LocationType.WH_PACKING, to: LocationType.WH_OUTPUT };
-
-    case OrderStatus.PendingOrder:
-      return { from: LocationType.WH_OUTPUT, to: LocationType.SHIPPING_COMPANY };
-
-    case OrderStatus.FailedDelivery:
-      return { from: LocationType.SHIPPING_COMPANY, to: LocationType.WH_OUTPUT };
 
     case OrderStatus.DeliveredOrder:
       return { from: LocationType.SHIPPING_COMPANY, to: LocationType.CLIENT };
 
-    case OrderStatus.ExchangeOrderInProgress:
-    case OrderStatus.ReturnOrderInProgress:
-      return { from: LocationType.CLIENT, to: LocationType.SHIPPING_COMPANY };
+    case OrderStatus.FailedDelivery:
+      return { from: LocationType.SHIPPING_COMPANY, to: LocationType.WH_STOCK };
 
     case OrderStatus.ExchangedOrder:
     case OrderStatus.ReturnedOrder:
-      return { from: LocationType.SHIPPING_COMPANY, to: LocationType.WH_STOCK };
-
-    case OrderStatus.FailedExchangeRequest:
-    case OrderStatus.FailedReturnRequest:
-      return { from: LocationType.SHIPPING_COMPANY, to: LocationType.CLIENT };
+      return { from: LocationType.CLIENT, to: LocationType.WH_STOCK };
 
     default:
       return null; // Return null if no valid status is matched
