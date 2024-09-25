@@ -78,14 +78,14 @@ export function getLocationFromStatus(status: OrderStatus): { from: LocationType
       return { from: LocationType.WH_PACKING, to: LocationType.WH_OUTPUT };
 
     case OrderStatus.DeliveredOrder:
-      return { from: LocationType.SHIPPING_COMPANY, to: LocationType.CLIENT };
+      return { from: LocationType.SHIPPING_COMPANY, to: LocationType.DELIVERY };
 
     case OrderStatus.FailedDelivery:
       return { from: LocationType.SHIPPING_COMPANY, to: LocationType.WH_STOCK };
 
     case OrderStatus.ExchangedOrder:
     case OrderStatus.ReturnedOrder:
-      return { from: LocationType.CLIENT, to: LocationType.WH_STOCK };
+      return { from: LocationType.DELIVERY, to: LocationType.WH_STOCK };
 
     default:
       return null; // Return null if no valid status is matched
