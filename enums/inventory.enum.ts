@@ -29,21 +29,17 @@ export enum PickingStatus {
 }
 
 export enum LocationType {
-  WH_PO = 'WH/PO', // أمر التوريد: استلام البضاعة من المورد في المخزن
-  WH_RPO = 'WH/RPO', // مرتجع بضاعة للمورد: إرجاع البضاعة إلى المورد
-  WH_PICK = 'WH/PICK', // إذن نقل مخزني: نقل البضاعة من المخزن الرئيسي إلى منطقة التعبئة
-  WH_OUT = 'WH/OUT', // إذن خروج بضاعة: إخراج البضاعة من منطقة التعبئة إلى شركة الشحن
-  WH_DLV = 'WH/DLV', // إذن تسليم: تسليم البضاعة من شركة الشحن إلى العميل النهائي
-  WH_RTO = 'WH/RTO', // مرتجع إلى الأصل: إعادة البضاعة من شركة الشحن إلى المخزن الرئيسي
-  WH_DMG = 'WH/DMG', // المنتجات التالفة: خصم المنتجات التالفة من المخزون ونقلها إلى مخزن مخصص للتوالف
-  WH_INT = 'WH/INT', // نقل داخلي: نقل البضائع بين المخازن حسب الحاجة
-  WH_LOST = 'WH/LOST', // ضياع المنتج: توثيق ضياع المنتج أثناء الشحن
-  WH_STOCK = 'STOCK', // المخزون الرئيسي
+  VENDOR = 'PO', // المورد
+  WH_STOCK = 'WH', // المخزون الرئيسي
   WH_PACKING = 'PICK', // منطقة التعبئة
-  WH_OUTPUT = 'WH_OUTPUT', // منطقة الخروج
-  SHIPPING_COMPANY = 'SHIPPING_COMPANY', // شركة الشحن
-  CLIENT = 'CLIENT', // العميل
-  VENDOR = 'VENDOR', // المورد
+  WH_OUTPUT = 'OUT', // منطقة الخروج
+  DELIVERY = 'DLV', // منطقة التسليم
+  SHIPPING_COMPANY = 'SH', // شركة الشحن
+  VENDOR_RETURN = 'RPO', // مرتجع المورد
+  STOCK_RETURN = 'RTO', // مرتجع المخزون
+  DAMAGED = 'DMG', // التالف
+  INTERNAL = 'INT', // نقل داخلي
+  LOST = 'LOST', // ضياع
 }
 
 export function canUpdatePurchaseStatus(oldStatus: PurchaseStatus, newStatus: PurchaseStatus): boolean {
@@ -78,14 +74,14 @@ export function getLocationFromStatus(status: OrderStatus): { from: LocationType
       return { from: LocationType.WH_PACKING, to: LocationType.WH_OUTPUT };
 
     case OrderStatus.DeliveredOrder:
-      return { from: LocationType.SHIPPING_COMPANY, to: LocationType.CLIENT };
+      return { from: LocationType.SHIPPING_COMPANY, to: LocationType.DELIVERY };
 
     case OrderStatus.FailedDelivery:
       return { from: LocationType.SHIPPING_COMPANY, to: LocationType.WH_STOCK };
 
     case OrderStatus.ExchangedOrder:
     case OrderStatus.ReturnedOrder:
-      return { from: LocationType.CLIENT, to: LocationType.WH_STOCK };
+      return { from: LocationType.DELIVERY, to: LocationType.WH_STOCK };
 
     default:
       return null; // Return null if no valid status is matched
