@@ -117,6 +117,7 @@ export const queryKeys = {
       stock: 'PURCHASE_STOCK',
       stockMovement: 'PURCHASE_STOCK_MOVEMENT',
       stockPicking: 'PURCHASE_STOCK_PICKING',
+      warehouses: 'PURCHASE_WAREHOUSES',
     },
     dropdown: {
       categories: 'ADMIN_DROPDOWN_CATEGORIES',
