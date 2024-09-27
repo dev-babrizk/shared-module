@@ -376,12 +376,29 @@ export const PermissionByRole: any = {
 //   [UserRole.AU]: '/admin/orders',
 //   [UserRole.AFU]: '/dashboard',
 // };
-export const isOrderChangeAllowed = (status: number) => {
+export const isOrderChangeAllowedForMerchent = (status: number) => {
   switch (status) {
     case OrderStatus.NewOrderRequest:
     case OrderStatus.ConfirmedOrder:
     case OrderStatus.HoldConfirmationOrder:
     case OrderStatus.OutOfStockProduct:
+      return true;
+    default:
+      return false;
+  }
+};
+
+export const isOrderChangeAllowedForAdmin = (status: number) => {
+  switch (status) {
+    case OrderStatus.NewOrderRequest:
+    case OrderStatus.ConfirmedOrder:
+    case OrderStatus.HoldConfirmationOrder:
+    case OrderStatus.OutOfStockProduct:
+    case OrderStatus.ShippedOrder:
+    case OrderStatus.DeliveredOrder:
+    case OrderStatus.FailedDelivery:
+    case OrderStatus.ExchangedOrder:
+    case OrderStatus.ReturnedOrder:
       return true;
     default:
       return false;
