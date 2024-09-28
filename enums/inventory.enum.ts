@@ -28,6 +28,12 @@ export enum PickingStatus {
   CANCELLED,
 }
 
+export enum PickingReturnedStatus {
+  IN_PROGRESS,
+  DONE,
+  CANCELLED,
+}
+
 export enum LocationType {
   VENDOR = 'PO', // المورد
   WH_STOCK = 'WH', // المخزون الرئيسي
