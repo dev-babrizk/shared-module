@@ -113,3 +113,8 @@ export function canUpdatePickingListStatus(oldStatus: PickingStatus, newStatus: 
   // Default case: return false if no valid transition is found
   return false;
 }
+
+export enum PICKINGLIST_ORDERSTATUSES {
+  IN = OrderStatus.OrderPreparing,
+  OUT = OrderStatus.PendingOrder,
+}

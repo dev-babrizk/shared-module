@@ -128,6 +128,7 @@ export const queryKeys = {
       Attributeskeys: 'ADMIN_DROPDOWN_ATTRIBUTESKEYS',
       vendors: 'ADMIN_DROPDOWN_VENDORS',
       variants: 'ADMIN_DROPDOWN_VARIANTS',
+      warehouses: 'ADMIN_DROPDOWN_WAREHOUSES',
     },
   },
 };
