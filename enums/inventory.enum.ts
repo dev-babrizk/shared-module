@@ -29,6 +29,7 @@ export enum PickingStatus {
 }
 
 export enum PickingReturnedStatus {
+  DRAFT = 1,
   IN_PROGRESS,
   DONE,
   CANCELLED,
@@ -83,7 +84,7 @@ export function getLocationFromStatus(status: OrderStatus): { from: LocationType
       return { from: LocationType.SHIPPING_COMPANY, to: LocationType.DELIVERY };
 
     case OrderStatus.FailedDelivery:
-      return { from: LocationType.SHIPPING_COMPANY, to: LocationType.WH_STOCK };
+      return { from: LocationType.SHIPPING_COMPANY, to: LocationType.STOCK_RETURN };
 
     case OrderStatus.ExchangedOrder:
     case OrderStatus.ReturnedOrder:
@@ -108,6 +109,26 @@ export function canUpdatePickingListStatus(oldStatus: PickingStatus, newStatus: 
   // If the old status is IN_PROGRESS, it can only be changed to DONE or REVERSED
   if (oldStatus === PickingStatus.IN_PROGRESS) {
     return [+PickingStatus.DONE, +PickingStatus.REVERSED].includes(+newStatus);
+  }
+
+  // Default case: return false if no valid transition is found
+  return false;
+}
+
+export function canUpdatePickingOutListStatus(oldStatus: PickingReturnedStatus, newStatus: PickingReturnedStatus): boolean {
+  // If the old status is DONE, CANCELLED, or REVERSED, don't allow any changes
+  if ([PickingReturnedStatus.DONE, PickingReturnedStatus.CANCELLED].includes(oldStatus)) {
+    return false;
+  }
+
+  // If the old status is DRAFT, it can only be changed to IN_PROGRESS or CANCELLED
+  if (oldStatus === PickingReturnedStatus.DRAFT) {
+    return [+PickingReturnedStatus.IN_PROGRESS, +PickingReturnedStatus.CANCELLED].includes(+newStatus);
+  }
+
+  // If the old status is IN_PROGRESS, it can only be changed to DONE or REVERSED
+  if (oldStatus === PickingReturnedStatus.IN_PROGRESS) {
+    return [+PickingReturnedStatus.DONE].includes(+newStatus);
   }
 
   // Default case: return false if no valid transition is found
