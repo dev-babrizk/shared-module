@@ -20,18 +20,11 @@ export enum ReturnReason {
   EXPIRED = 'expired',
 }
 
-export enum PickingOutStatus {
+export enum PickingStatus {
   DRAFT = 1,
   IN_PROGRESS,
   DONE,
   REVERSED,
-  CANCELLED,
-}
-
-export enum PickingInStatus {
-  DRAFT = 1,
-  IN_PROGRESS,
-  DONE,
   CANCELLED,
 }
 
@@ -95,40 +88,40 @@ export function getLocationFromStatus(status: OrderStatus): { from: LocationType
   }
 }
 
-export function canUpdatePickingOutListStatus(oldStatus: PickingOutStatus, newStatus: PickingOutStatus): boolean {
+export function canUpdatePickingOutListStatus(oldStatus: PickingStatus, newStatus: PickingStatus): boolean {
   // If the old status is DONE, CANCELLED, or REVERSED, don't allow any changes
-  if ([PickingOutStatus.DONE, PickingOutStatus.CANCELLED, PickingOutStatus.REVERSED].includes(oldStatus)) {
+  if ([PickingStatus.DONE, PickingStatus.CANCELLED, PickingStatus.REVERSED].includes(oldStatus)) {
     return false;
   }
 
   // If the old status is DRAFT, it can only be changed to IN_PROGRESS or CANCELLED
-  if (oldStatus === PickingOutStatus.DRAFT) {
-    return [+PickingOutStatus.IN_PROGRESS, +PickingOutStatus.CANCELLED].includes(+newStatus);
+  if (oldStatus === PickingStatus.DRAFT) {
+    return [+PickingStatus.IN_PROGRESS, +PickingStatus.CANCELLED].includes(+newStatus);
   }
 
   // If the old status is IN_PROGRESS, it can only be changed to DONE or REVERSED
-  if (oldStatus === PickingOutStatus.IN_PROGRESS) {
-    return [+PickingOutStatus.DONE, +PickingOutStatus.REVERSED].includes(+newStatus);
+  if (oldStatus === PickingStatus.IN_PROGRESS) {
+    return [+PickingStatus.DONE, +PickingStatus.REVERSED].includes(+newStatus);
   }
 
   // Default case: return false if no valid transition is found
   return false;
 }
 
-export function canUpdatePickingInListStatus(oldStatus: PickingInStatus, newStatus: string | number): boolean {
+export function canUpdatePickingInListStatus(oldStatus: PickingStatus, newStatus: string | number): boolean {
   // If the old status is DONE, CANCELLED, or REVERSED, don't allow any changes
-  if ([PickingInStatus.DONE, PickingInStatus.CANCELLED].includes(oldStatus)) {
+  if ([PickingStatus.DONE, PickingStatus.CANCELLED].includes(oldStatus)) {
     return false;
   }
 
   // If the old status is DRAFT, it can only be changed to IN_PROGRESS or CANCELLED
-  if (oldStatus === PickingInStatus.DRAFT) {
-    return [+PickingInStatus.IN_PROGRESS, +PickingInStatus.CANCELLED].includes(+newStatus);
+  if (oldStatus === PickingStatus.DRAFT) {
+    return [+PickingStatus.IN_PROGRESS, +PickingStatus.CANCELLED].includes(+newStatus);
   }
 
   // If the old status is IN_PROGRESS, it can only be changed to DONE or REVERSED
-  if (oldStatus === PickingInStatus.IN_PROGRESS) {
-    return [+PickingInStatus.DONE].includes(+newStatus);
+  if (oldStatus === PickingStatus.IN_PROGRESS) {
+    return [+PickingStatus.DONE].includes(+newStatus);
   }
 
   // Default case: return false if no valid transition is found
