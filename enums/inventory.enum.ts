@@ -115,7 +115,7 @@ export function canUpdatePickingOutListStatus(oldStatus: PickingOutStatus, newSt
   return false;
 }
 
-export function canUpdatePickingInListStatus(oldStatus, newStatus): boolean {
+export function canUpdatePickingInListStatus(oldStatus: PickingInStatus, newStatus: string | number): boolean {
   // If the old status is DONE, CANCELLED, or REVERSED, don't allow any changes
   if ([PickingInStatus.DONE, PickingInStatus.CANCELLED].includes(oldStatus)) {
     return false;
