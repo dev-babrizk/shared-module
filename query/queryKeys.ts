@@ -119,6 +119,7 @@ export const queryKeys = {
       stockPicking: 'PURCHASE_STOCK_PICKING',
       returns: 'PURCHASE_STOCK_MOVEMENT_RETURNS',
       warehouses: 'PURCHASE_WAREHOUSES',
+      pickinglistOfReturns: 'PICINGLISTOFRETURNS',
     },
     dropdown: {
       categories: 'ADMIN_DROPDOWN_CATEGORIES',
