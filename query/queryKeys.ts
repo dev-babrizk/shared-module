@@ -117,6 +117,7 @@ export const queryKeys = {
       stock: 'PURCHASE_STOCK',
       stockMovement: 'PURCHASE_STOCK_MOVEMENT',
       stockPicking: 'PURCHASE_STOCK_PICKING',
+      stockPickingView: 'PURCHASE_STOCK_PICKING_VIEW',
       returns: 'PURCHASE_STOCK_MOVEMENT_RETURNS',
       warehouses: 'PURCHASE_WAREHOUSES',
       pickinglistOfReturns: 'PICINGLISTOFRETURNS',
