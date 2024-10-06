@@ -106,7 +106,6 @@ export enum UserRole {
   AFU, // Marketing User
   SEU, // Vendor User
 }
-
 // Order status
 export enum OrderStatus {
   // Confirmation Steps
@@ -139,6 +138,13 @@ export enum OrderStatus {
   OutOfStockProduct = 50,
   CancelledOrderByMarketer = 51,
 }
+
+export const OrderType = {
+  WAITING: [OrderStatus.NewOrderRequest],
+  CONFIRMED: [OrderStatus.HoldConfirmationOrder, OrderStatus.ConfirmedOrder],
+  READY_TO_ASSIGN: [OrderStatus.OrderPreparing],
+  FULFILLMENT: [OrderStatus.ShippedOrder],
+};
 
 // Payment status
 export const enum PaymentStatus {
