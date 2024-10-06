@@ -139,13 +139,6 @@ export enum OrderStatus {
   CancelledOrderByMarketer = 51,
 }
 
-export const OrderType = {
-  WAITING: [OrderStatus.NewOrderRequest],
-  CONFIRMED: [OrderStatus.HoldConfirmationOrder, OrderStatus.ConfirmedOrder],
-  READY_TO_ASSIGN: [OrderStatus.OrderPreparing],
-  FULFILLMENT: [OrderStatus.ShippedOrder],
-};
-
 // Payment status
 export const enum PaymentStatus {
   Pending = 1,
