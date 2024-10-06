@@ -114,6 +114,7 @@ export const queryKeys = {
     accountManager: 'ACCOUNTMANAGER',
     inventory: {
       purchase: 'PURCHASE',
+      purchaseSuppliers: 'PURCHASE_SUPPLIER',
       stock: 'PURCHASE_STOCK',
       stockMovement: 'PURCHASE_STOCK_MOVEMENT',
       stockPicking: 'PURCHASE_STOCK_PICKING',
