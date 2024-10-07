@@ -139,6 +139,12 @@ export enum OrderStatus {
   CancelledOrderByMarketer = 51,
 }
 
+export enum OrderTypes {
+  default = 1,
+  refund,
+  return,
+}
+
 // Payment status
 export const enum PaymentStatus {
   Pending = 1,
