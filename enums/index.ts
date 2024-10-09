@@ -141,7 +141,7 @@ export enum OrderStatus {
 
 export enum OrderTypes {
   default = 1,
-  refund,
+  exchange,
   return,
 }
 
