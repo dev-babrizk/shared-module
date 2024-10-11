@@ -1,3 +1,5 @@
+import { get } from 'http';
+
 export const queryKeys = {
   auth: {
     login: 'AUTH_LOGIN',
@@ -122,6 +124,8 @@ export const queryKeys = {
       returns: 'PURCHASE_STOCK_MOVEMENT_RETURNS',
       warehouses: 'PURCHASE_WAREHOUSES',
       pickinglistOfReturns: 'PICINGLISTOFRETURNS',
+      pickingDropDown: 'PICKING_DROPDOWN',
+      getQuantityByItemId: 'GETQUANTITYBYITEMID',
     },
     dropdown: {
       categories: 'ADMIN_DROPDOWN_CATEGORIES',

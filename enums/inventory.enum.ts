@@ -129,6 +129,6 @@ export function canUpdatePickingInListStatus(oldStatus: PickingStatus, newStatus
 }
 
 export enum PICKINGLIST_ORDERSTATUSES {
-  IN = OrderStatus.OrderPreparing,
-  OUT = OrderStatus.PendingOrder,
+  IN = OrderStatus.PendingOrder,
+  OUT = OrderStatus.OrderPreparing,
 }
