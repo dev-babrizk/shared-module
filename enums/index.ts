@@ -392,7 +392,14 @@ export const isOrderChangeAllowedForMerchent = (status: number) => {
       return false;
   }
 };
-
+export const isOrderReturnChangeAllowed = (status: number) => {
+  switch (status) {
+    case OrderStatus.DeliveredOrder:
+      return true;
+    default:
+      return false;
+  }
+};
 export const isOrderChangeAllowedForAdmin = (status: number) => {
   switch (status) {
     case OrderStatus.NewOrderRequest:
