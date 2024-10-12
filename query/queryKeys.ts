@@ -126,6 +126,7 @@ export const queryKeys = {
       pickinglistOfReturns: 'PICINGLISTOFRETURNS',
       pickingDropDown: 'PICKING_DROPDOWN',
       getQuantityByItemId: 'GETQUANTITYBYITEMID',
+      internalStock: 'INTERNALSTOCK',
     },
     dropdown: {
       categories: 'ADMIN_DROPDOWN_CATEGORIES',
