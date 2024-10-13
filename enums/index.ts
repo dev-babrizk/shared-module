@@ -429,7 +429,8 @@ export const isOrderShippingChangeAllowed = (status: number) => {
 export const isOrderPickinglistChangeAllowed = (status: number) => {
   switch (status) {
     case OrderStatus.OrderPreparing:
-    case OrderStatus.PendingOrder:
+    case OrderStatus.ReturnOrderInProgress:
+    case OrderStatus.ExchangeOrderInProgress:
       return true;
     default:
       return false;
