@@ -127,6 +127,7 @@ export const queryKeys = {
       pickingDropDown: 'PICKING_DROPDOWN',
       getQuantityByItemId: 'GETQUANTITYBYITEMID',
       internalStock: 'INTERNALSTOCK',
+      returnDropDown: 'RETURN_DROPDOWN',
     },
     dropdown: {
       categories: 'ADMIN_DROPDOWN_CATEGORIES',
