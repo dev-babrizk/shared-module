@@ -132,3 +132,9 @@ export enum PICKINGLIST_ORDERSTATUSES {
   IN = 1,
   OUT,
 }
+
+// export enum MovmentAction {
+//   VALIDATE = 1,
+//   UNREVERSE,
+//   RETURNTOWAREHOUSE,
+// }
